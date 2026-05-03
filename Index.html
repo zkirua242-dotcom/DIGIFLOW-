@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Digiflow</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #1a1a2e;
+      color: white;
+      font-family: Arial;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #0f3460;
+      padding: 15px 25px;
+      border-bottom: 2px solid #00d4ff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      color: #00d4ff;
+      font-size: 22px;
+      font-weight: bold;
+      text-shadow: 2px 2px 10px #00d4ff;
+    }
+
+    .nav-liens a {
+      color: white;
+      text-decoration: none;
+      margin: 0 8px;
+      font-size: 15px;
+    }
+
+    .nav-liens a:hover { color: #00d4ff; }
+
+    .panier-btn {
+      background-color: #00d4ff;
+      color: #1a1a2e;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #whatsapp-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 15px;
+      box-shadow: 0 4px 15px rgba(37,211,102,0.4);
+      z-index: 999;
+    }
+
+    .page { padding: 20px; }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h1 {
+      color: #00d4ff;
+      text-align: center;
+      font-size: 30px;
+      text-shadow: 2px 2px 10px #00d4ff;
+      margin-bottom: 25px;
+    }
+
+    h2 { color: #ff6b6b; margin: 20px 0 10px; }
+
+    .produits {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .carte {
+      background-color: #16213e;
+      border: 1px solid #00d4ff;
+      border-radius: 12px;
+      padding: 15px;
+      width: 220px;
+      text-align: center;
+    }
+
+    .carte img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .no-image { font-size: 50px; margin: 10px 0; }
+
+    .carte h3 { color: #00d4ff; font-size: 14px; margin: 8px 0; }
+    .carte p { color: #cccccc; font-size: 13px; margin: 4px 0; }
+    .prix { color: #00ff88 !important; font-weight: bold; font-size: 15px !important; }
+    .moyenne { color: #ffd700 !important; font-size: 13px !important; }
+
+    .carte a {
+      color: #00d4ff;
+      font-size: 12px;
+      display: block;
+      margin: 5px 0;
+    }
+
+    .carte button {
+      width: 100%;
+      margin-top: 8px;
+      background-color: #00d4ff;
+      color: #1a1a2e;
+      border: none;
+      padding: 8px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-whatsapp-produit {
+      display: block;
+      width: 100%;
+      margin-top: 8px;
+      background-color: #25d366 !important;
+      color: white !important;
+      border: none;
+      padding: 8px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .avis-section {
+      margin-top: 12px;
+      text-align: left;
+      border-top: 1px solid #00d4ff;
+      padding-top: 10px;
+    }
+
+    .avis-section h4 { color: #ffd700; margin-bottom: 8px; font-size: 13px; }
+
+    .avis-item {
+      background-color: #0f3460;
+      border-radius: 6px;
+      padding: 6px 8px;
+      margin: 5px 0;
+      font-size: 12px;
+    }
+
+    .avis-etoiles { color: #ffd700; }
+    .aucun-avis { color: #888; font-size: 12px; }
+
+    .avis-form input,
+    .avis-form select {
+      width: 100%;
+      padding: 6px;
+      margin: 4px 0;
+      border-radius: 6px;
+      border: 1px solid #00d4ff;
+      background-color: #0f3460;
+      color: white;
+      font-size: 12px;
+    }
+
+    .avis-form button {
+      background-color: #ffd700;
+      color: #1a1a2e;
+      font-size: 12px;
+      padding: 6px;
+    }
+
+    .carte-panier {
+      background-color: #16213e;
+      border: 1px solid #00d4ff;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 10px 0;
+    }
+
+    #total-panier { color: #00ff88; font-size: 22px; margin: 15px 0; }
+
+    button {
+      background-color: #0f3460;
+      color: #00d4ff;
+      border: 1px solid #00d4ff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .btn-commander {
+      background-color: #00ff88;
+      color: #1a1a2e;
+      border: none;
+      font-weight: bold;
+    }
+
+    .formulaire {
+      background-color: #16213e;
+      border: 1px solid #00d4ff;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      color: #00d4ff;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #00d4ff;
+      background-color: #0f3460;
+      color: white;
+      font-size: 15px;
+    }
+
+    textarea { height: 100px; resize: vertical; }
+
+    .formulaire button {
+      width: 100%;
+      margin-top: 20px;
+      background-color: #00d4ff;
+      color: #1a1a2e;
+      border: none;
+      font-weight: bold;
+      font-size: 17px;
+    }
+
+    .whatsapp-contact {
+      background-color: #16213e;
+      border: 1px solid #25d366;
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .whatsapp-contact h2 { color: #25d366; }
+    .whatsapp-contact p { margin: 10px 0; color: #cccccc; }
+
+    .btn-whatsapp {
+      display: inline-block;
+      background-color: #25d366;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .carte-admin {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #16213e;
+      border: 1px solid #00d4ff;
+      border-radius: 10px;
+      padding: 12px 15px;
+      margin: 8px 0;
+    }
+
+    .carte-admin h3 { color: #00d4ff; }
+    .carte-admin p { color: #00ff88; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">🎮 Digiflow</div>
+    <div class="nav-liens">
+      <a href="#" onclick="afficherPage('boutique')">Boutique</a>
+      <a href="#" onclick="afficherPage('contact')">Contact</a>
+      <a href="#" onclick="afficherPage('admin')">⚙️ Admin</a>
+      <button class="panier-btn" onclick="afficherPage('panier')">
+        🛒 <span id="nb-panier">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- WHATSAPP FLOTTANT -->
+  <a id="whatsapp-btn" href="https://wa.me/242050555965" target="_blank">
+    💬 Commander sur WhatsApp
+  </a>
+
+  <!-- PAGE BOUTIQUE -->
+  <div id="page-boutique" class="page">
+    <div class="container">
+      <h1>🛒 Nos Produits</h1>
+      <div class="produits" id="liste-produits"></div>
+    </div>
+  </div>
+
+  <!-- PAGE PANIER -->
+  <div id="page-panier" class="page" style="display:none">
+    <div class="container">
+      <h1>🛒 Mon Panier</h1>
+      <div id="contenu-panier"></div>
+      <h2 id="total-panier">Total : 0 FCFA</h2>
+      <button onclick="viderPanier()">🗑️ Vider</button>
+      <button class="btn-commander" onclick="commander()">✅ Commander</button>
+      <div id="msg-commande"></div>
+    </div>
+  </div>
+
+  <!-- PAGE CONTACT -->
+  <div id="page-contact" class="page" style="display:none">
+    <div class="container">
+      <h1>📞 Contactez-nous</h1>
+      <div class="formulaire">
+        <label>Ton prénom :</label>
+        <input type="text" id="contact-prenom" placeholder="Ton prénom...">
+        <label>Ton message :</label>
+        <textarea id="contact-message" placeholder="Ton message..."></textarea>
+        <button onclick="envoyerMessage()">📤 Envoyer</button>
+        <div id="msg-contact"></div>
+      </div>
+      <div class="whatsapp-contact">
+        <h2>💬 Nous contacter directement</h2>
+        <p>Tu préfères WhatsApp ? Clique ci-dessous !</p>
+        <a href="https://wa.me/242050555965" target="_blank" class="btn-whatsapp">
+          💬 Ouvrir WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE ADMIN -->
+  <div id="page-admin" class="page" style="display:none">
+    <div class="container">
+      <h1>⚙️ Panel Admin</h1>
+      <div class="formulaire">
+        <label>Nom du produit :</label>
+        <input type="text" id="admin-nom" placeholder="Ex: Manette PS5">
+        <label>Prix (FCFA) :</label>
+        <input type="number" id="admin-prix" placeholder="Ex: 25000">
+        <label>Description :</label>
+        <input type="text" id="admin-desc" placeholder="Ex: Manette sans fil...">
+        <label>Emoji :</label>
+        <input type="text" id="admin-emoji" placeholder="Ex: 🎮">
+        <label>URL de l'image :</label>
+        <input type="text" id="admin-image" placeholder="Colle l'URL de l'image...">
+        <label>Lien du produit (optionnel) :</label>
+        <input type="text" id="admin-lien" placeholder="Ex: https://...">
+        <button onclick="ajouterProduit()">➕ Ajouter le produit</button>
+      </div>
+      <h2>📦 Produits actuels</h2>
+      <div id="admin-liste"></div>
+    </div>
+  </div>
+
+  <script>
+    let produits = [
+      { id: 1, nom: "Gant pour écran", prix: 5000, desc: "Parfait pour le gaming mobile", emoji: "🧤", image: "", lien: "", avis: [] },
+      { id: 2, nom: "Casque gaming", prix: 35000, desc: "Son immersif 360°", emoji: "🎧", image: "", lien: "", avis: [] },
+      { id: 3, nom: "Souris gaming", prix: 15000, desc: "Précision professionnelle", emoji: "🖱️", image: "", lien: "", avis: [] },
+      { id: 4, nom: "Ordinateur gaming", prix: 450000, desc: "Performances maximales", emoji: "💻", image: "", lien: "", avis: [] }
+    ];
+
+    let panier = [];
+    let prochainId = 5;
+    const NUMERO = "242050555965";
+
+    function afficherPage(page) {
+      ["boutique", "panier", "contact", "admin"].forEach(function(p) {
+        document.getElementById("page-" + p).style.display = "none";
+      });
+      document.getElementById("page-" + page).style.display = "block";
+      if (page == "boutique") afficherProduits();
+      if (page == "panier") afficherPanier();
+      if (page == "admin") afficherAdminListe();
+    }
+
+    function afficherProduits() {
+      let html = "";
+      produits.forEach(function(p) {
+        let img = p.image
+          ? '<img src="' + p.image + '" alt="' + p.nom + '">'
+          : '<div class="no-image">' + p.emoji + '</div>';
+
+        let lien = p.lien
+          ? '<a href="' + p.lien + '" target="_blank">🔗 Voir plus</a>'
+          : '';
+
+        let moyenneHtml = calculerMoyenne(p);
+
+        let avisHtml = "";
+        p.avis.forEach(function(a) {
+          avisHtml += '<div class="avis-item">' +
+                        '<span class="avis-etoiles">' + etoiles(a.note) + '</span> ' +
+                        '<strong>' + a.prenom + '</strong> : ' + a.texte +
+                      '</div>';
+        });
+
+        html += '<div class="carte">' +
+                  img +
+                  '<h3>' + p.emoji + ' ' + p.nom + '</h3>' +
+                  '<p>' + p.desc + '</p>' +
+                  '<p class="prix">' + p.prix.toLocaleString() + ' FCFA</p>' +
+                  moyenneHtml +
+                  lien +
+                  '<button onclick="ajouterAuPanier(' + p.id + ')">🛒 Ajouter</button>' +
+                  '<a class="btn-whatsapp-produit" href="https://wa.me/' + NUMERO + '?text=Bonjour%20je%20veux%20commander%20' + encodeURIComponent(p.nom) + '" target="_blank">💬 Commander via WhatsApp</a>' +
+                  '<div class="avis-section">' +
+                    '<h4>⭐ Avis clients</h4>' +
+                    (avisHtml || '<p class="aucun-avis">Aucun avis pour l\'instant</p>') +
+                    '<div class="avis-form">' +
+                      '<input type="text" id="prenom-' + p.id + '" placeholder="Ton prénom...">' +
+                      '<input type="text" id="texte-' + p.id + '" placeholder="Ton avis...">' +
+                      '<select id="note-' + p.id + '">' +
+                        '<option value="5">⭐⭐⭐⭐⭐</option>' +
+                        '<option value="4">⭐⭐⭐⭐</option>' +
+                        '<option value="3">⭐⭐⭐</option>' +
+                        '<option value="2">⭐⭐</option>' +
+                        '<option value="1">⭐</option>' +
+                      '</select>' +
+                      '<button onclick="ajouterAvis(' + p.id + ')">📝 Laisser un avis</button>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>';
+      });
+      document.getElementById("liste-produits").innerHTML = html;
+    }
+
+    function etoiles(note) {
+      let s = "";
+      for (let i = 0; i < note; i++) s += "⭐";
+      return s;
+    }
+
+    function calculerMoyenne(p) {
+      if (p.avis.length == 0) return '<p class="moyenne">Pas encore noté</p>';
+      let total = 0;
+      p.avis.forEach(function(a) { total += a.note; });
+      let moy = (total / p.avis.length).toFixed(1);
+      return '<p class="moyenne">Note : ' + moy + '/5 (' + p.avis.length + ' avis)</p>';
+    }
+
+    function ajouterAvis(id) {
+      let prenom = document.getElementById("prenom-" + id).value;
+      let texte = document.getElementById("texte-" + id).value;
+      let note = parseInt(document.getElementById("note-" + id).value);
+      if (prenom == "" || texte == "") { alert("⚠️ Remplis ton prénom et ton avis !"); return; }
+      let produit = produits.find(function(p) { return p.id == id; });
+      produit.avis.push({ prenom: prenom, texte: texte, note: note });
+      afficherProduits();
+    }
+
+    function ajouterAuPanier(id) {
+      let produit = produits.find(function(p) { return p.id == id; });
+      let existant = panier.find(function(p) { return p.id == id; });
+      if (existant) {
+        existant.quantite++;
+      } else {
+        panier.push({ id: produit.id, nom: produit.nom, prix: produit.prix, quantite: 1 });
+      }
+      document.getElementById("nb-panier").innerHTML = panier.length;
+      alert("✅ " + produit.nom + " ajouté au panier !");
+    }
+
+    function afficherPanier() {
+      if (panier.length == 0) {
+        document.getElementById("contenu-panier").innerHTML = "<p>Ton panier est vide 😢</p>";
+        document.getElementById("total-panier").innerHTML = "Total : 0 FCFA";
+        return;
+      }
+      let html = "";
+      let total = 0;
+      panier.forEach(function(p) {
+        let sousTotal = p.prix * p.quantite;
+        total += sousTotal;
+        html += '<div class="carte-panier">' +
+                  '<h3>' + p.nom + '</h3>' +
+                  '<p>Prix : ' + p.prix.toLocaleString() + ' FCFA</p>' +
+                  '<p>Quantité : ' + p.quantite + '</p>' +
+                  '<p class="prix">Sous-total : ' + sousTotal.toLocaleString() + ' FCFA</p>' +
+                '</div>';
+      });
+      document.getElementById("contenu-panier").innerHTML = html;
+      document.getElementById("total-panier").innerHTML = "Total : " + total.toLocaleString() + " FCFA";
+    }
+
+    function viderPanier() {
+      panier = [];
+      document.getElementById("nb-panier").innerHTML = 0;
+      afficherPanier();
+    }
+
+    function commander() {
+      if (panier.length == 0) { alert("Ton panier est vide !"); return; }
+      let msg = document.getElementById("msg-commande");
+      msg.innerHTML = "🎉 Commande confirmée ! Nous vous contacterons bientôt.";
+      msg.style.color = "#00ff88";
+      msg.style.fontSize = "18px";
+      viderPanier();
+    }
+
+    function envoyerMessage() {
+      let prenom = document.getElementById("contact-prenom").value;
+      let message = document.getElementById("contact-message").value;
+      if (prenom == "" || message == "") { alert("⚠️ Remplis tous les champs !"); return; }
+      let msg = document.getElementById("msg-contact");
+      msg.innerHTML = "✅ Merci " + prenom + " ! Ton message a été envoyé.";
+      msg.style.color = "#00ff88";
+      document.getElementById("contact-prenom").value = "";
+      document.getElementById("contact-message").value = "";
+    }
+
+    function ajouterProduit() {
+      let nom = document.getElementById("admin-nom").value;
+      let prix = parseInt(document.getElementById("admin-prix").value);
+      let desc = document.getElementById("admin-desc").value;
+      let emoji = document.getElementById("admin-emoji").value;
+      let image = document.getElementById("admin-image").value;
+      let lien = document.getElementById("admin-lien").value;
+      if (nom == "" || !prix) { alert("⚠️ Nom et prix obligatoires !"); return; }
+      produits.push({ id: prochainId, nom: nom, prix: prix, desc: desc, emoji: emoji || "📦", image: image, lien: lien, avis: [] });
+      prochainId++;
+      ["admin-nom","admin-prix","admin-desc","admin-emoji","admin-image","admin-lien"].forEach(function(id) {
+        document.getElementById(id).value = "";
+      });
+      afficherAdminListe();
+      alert("✅ Produit ajouté !");
+    }
+
+    function supprimerProduit(id) {
+      produits = produits.filter(function(p) { return p.id != id; });
+      afficherAdminListe();
+    }
+
+    function afficherAdminListe() {
+      let html = "";
+      produits.forEach(function(p) {
+        html += '<div class="carte-admin">' +
+                  '<div><h3>' + p.emoji + ' ' + p.nom + '</h3>' +
+                  '<p>' + p.prix.toLocaleString() + ' FCFA</p></div>' +
+                  '<button onclick="supprimerProduit(' + p.id + ')">🗑️</button>' +
+                '</div>';
+      });
+      document.getElementById("admin-liste").innerHTML = html;
+    }
+
+    afficherProduits();
+  </script>
+
+</body>
+  </html>
